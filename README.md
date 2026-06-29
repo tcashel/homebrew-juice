@@ -19,10 +19,12 @@ in the official Homebrew cask repo.
 
 The Developer ID build is notarized and stapled, so it opens normally — no Gatekeeper
 prompt, no `xattr` dance. **While the project is still on its interim ad-hoc-signed
-build,** Gatekeeper will quarantine it, so install with:
+build,** Gatekeeper will quarantine it, so clear the quarantine once after installing
+(current Homebrew dropped the old `--no-quarantine` flag):
 
 ```sh
-brew install --cask --no-quarantine juice-app
+brew install --cask juice-app
+xattr -dr com.apple.quarantine /Applications/Juice.app
 ```
 
 Requirements: macOS 26 (Tahoe) or newer, Apple Silicon (M-series), and
