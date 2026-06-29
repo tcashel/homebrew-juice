@@ -109,8 +109,17 @@ if [[ -e "$DEST" ]]; then
 fi
 
 maybe_sudo ditto "$SRC" "$DEST"
-# Notarized builds open without this; harmless to run, and it keeps any older
-# unsigned/interim build openable too.
+
+# Report Gatekeeper's verdict before clearing quarantine. A notarized build passes
+# ("accepted … Notarized Developer ID"); the interim ad-hoc build won't — that's
+# expected while the Developer ID cert is being wired. The sha256 check above already
+# covered download integrity.
+if command -v spctl >/dev/null 2>&1; then
+  spctl --assess --type execute --verbose=2 "$DEST" 2>&1 | sed 's/^/  gatekeeper: /' || true
+fi
+
+# Notarized builds open without this; for the interim ad-hoc build it's required, and
+# it's harmless on a notarized build (no quarantine xattr to remove).
 maybe_sudo xattr -dr com.apple.quarantine "$DEST" 2>/dev/null || true
 
 # Symlink juice-mcpbridge into /usr/local/bin so MCP clients can spawn it
