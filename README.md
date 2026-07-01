@@ -17,15 +17,8 @@ brew install --cask juice-app
 The cask token is `juice-app`, not `juice` — the bare `juice` cask name is already taken
 in the official Homebrew cask repo.
 
-The Developer ID build is notarized and stapled, so it opens normally — no Gatekeeper
-prompt, no `xattr` dance. **While the project is still on its interim ad-hoc-signed
-build,** Gatekeeper will quarantine it, so clear the quarantine once after installing
-(current Homebrew dropped the old `--no-quarantine` flag):
-
-```sh
-brew install --cask juice-app
-xattr -dr com.apple.quarantine /Applications/Juice.app
-```
+The app is signed with a Developer ID certificate, notarized, and stapled, so it opens
+normally — no Gatekeeper prompt, no `xattr` dance.
 
 Requirements: macOS 26 (Tahoe) or newer, Apple Silicon (M-series), and
 [Claude Code](https://claude.ai/code) (`claude` on your PATH).
@@ -57,7 +50,6 @@ brew uninstall --cask juice-app          # add --zap to also remove app data
 
 ## How releases land here
 
-Tagging `v*` in the private `tcashel/juice` repo runs CI that builds, signs (Developer ID
-+ notarize + staple once the cert is wired; ad-hoc in the interim), then cross-uploads
-`Juice.zip` to this repo's Releases and re-renders [`Casks/juice-app.rb`](./Casks). See
-ADR 0015 in the source repo.
+Tagging `v*` in the private `tcashel/juice` repo runs CI that builds, signs with Developer
+ID, notarizes, and staples the app, then cross-uploads `Juice.zip` to this repo's Releases
+and re-renders [`Casks/juice-app.rb`](./Casks). See ADR 0015 in the source repo.
