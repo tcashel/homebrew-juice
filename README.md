@@ -11,8 +11,13 @@ anyone can install it.
 
 ```sh
 brew tap tcashel/juice
+brew trust --cask tcashel/juice/juice-app   # Homebrew 6+ requires trusting third-party taps
 brew install --cask juice-app
 ```
+
+Recent Homebrew (6.x) refuses to load casks from any tap outside `homebrew/cask` until you
+trust it ([Tap Trust](https://docs.brew.sh/Tap-Trust)) — that's the middle line, not
+anything specific to Juice.
 
 The cask token is `juice-app`, not `juice` — the bare `juice` cask name is already taken
 in the official Homebrew cask repo.
