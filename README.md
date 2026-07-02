@@ -16,14 +16,11 @@ brew install --cask juice-app
 ```
 
 Recent Homebrew (6.x) refuses to load casks from any tap outside `homebrew/cask` until you
-trust it ([Tap Trust](https://docs.brew.sh/Tap-Trust)) — that's the middle line, not
-anything specific to Juice.
+trust it ([Tap Trust](https://docs.brew.sh/Tap-Trust)).
 
 The cask token is `juice-app`, not `juice` — the bare `juice` cask name is already taken
 in the official Homebrew cask repo.
 
-The app is signed with a Developer ID certificate, notarized, and stapled, so it opens
-normally — no Gatekeeper prompt, no `xattr` dance.
 
 Requirements: macOS 26 (Tahoe) or newer, Apple Silicon (M-series), and
 [Claude Code](https://claude.ai/code) (`claude` on your PATH).
@@ -57,4 +54,4 @@ brew uninstall --cask juice-app          # add --zap to also remove app data
 
 Tagging `v*` in the private `tcashel/juice` repo runs CI that builds, signs with Developer
 ID, notarizes, and staples the app, then cross-uploads `Juice.zip` to this repo's Releases
-and re-renders [`Casks/juice-app.rb`](./Casks). See ADR 0015 in the source repo.
+and re-renders [`Casks/juice-app.rb`](./Casks).
