@@ -1,57 +1,52 @@
-# homebrew-juice
+# Juice
 
-Homebrew tap for **[Juice](https://github.com/tcashel/juice)** — a native macOS app that
-mines your AI coding-agent session histories (Claude Code, Codex, …) into per-repo
-optimizations.
-
-The Juice source repo is private; this public tap hosts the app binary and the cask so
-anyone can install it.
+Juice is a native macOS app that turns local Claude Code and Codex histories into bounded, cited context and repository provenance.
 
 ## Install
 
+Requirements: Apple Silicon and macOS 26.3 or newer.
+
 ```sh
 brew tap tcashel/juice
-brew trust --cask tcashel/juice/juice-app   # Homebrew 6+ requires trusting third-party taps
+brew trust --cask tcashel/juice/juice-app
 brew install --cask juice-app
 ```
 
-Recent Homebrew (6.x) refuses to load casks from any tap outside `homebrew/cask` until you
-trust it ([Tap Trust](https://docs.brew.sh/Tap-Trust)).
+The app is Developer ID signed, notarized, and stapled. Open Juice after installation and use **Settings → Connections** to connect detected Claude Code and Codex clients. To use the `juice` command directly, enable **Settings → Advanced → Agent API → Juice CLI access**.
 
-The cask token is `juice-app`, not `juice` — the bare `juice` cask name is already taken
-in the official Homebrew cask repo.
+The cask token is `juice-app`. The bare `juice` token belongs to a different app in Homebrew's official cask repository.
 
+## Agent workflow plugin
 
-Requirements: macOS 26 (Tahoe) or newer, Apple Silicon (M-series), and
-[Claude Code](https://claude.ai/code) (`claude` on your PATH).
+The optional skills-only plugin teaches an agent when to query Juice. It does not bundle another MCP server or credential; Juice's in-app Connect flow remains the revocable local data boundary.
 
-### Connect it to your MCP client
+Claude Code:
 
-The cask symlinks the `juice-mcpbridge` stdio shim onto your PATH. Register it once:
-
-```sh
-claude mcp add juice -- juice-mcpbridge
+```text
+/plugin marketplace add tcashel/homebrew-juice
+/plugin install juice@juice
 ```
 
-### curl | bash fallback (no Homebrew)
+Codex CLI:
+
+```sh
+codex plugin marketplace add tcashel/homebrew-juice
+codex plugin add juice@juice
+```
+
+## Update or uninstall
+
+```sh
+brew upgrade --cask juice-app
+brew uninstall --cask juice-app
+```
+
+Without Homebrew, inspect and run the public installer:
 
 ```sh
 curl -fsSL https://raw.githubusercontent.com/tcashel/homebrew-juice/main/install.sh | bash
 ```
 
-Downloads the latest `Juice.zip`, verifies its SHA-256, installs to `/Applications`, and
-symlinks `juice-mcpbridge` into `/usr/local/bin`. Read [`install.sh`](./install.sh) before
-piping it to a shell.
-
-## Updating / uninstalling
-
-```sh
-brew upgrade --cask juice-app
-brew uninstall --cask juice-app          # add --zap to also remove app data
-```
-
-## How releases land here
-
-Tagging `v*` in the private `tcashel/juice` repo runs CI that builds, signs with Developer
-ID, notarizes, and staples the app, then cross-uploads `Juice.zip` to this repo's Releases
-and re-renders [`Casks/juice-app.rb`](./Casks).
+The canonical installer verifies the release checksum, Developer ID signature,
+stapled notarization ticket, and Gatekeeper assessment. It never clears
+quarantine or continues after a failed assessment.

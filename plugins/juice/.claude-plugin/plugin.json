@@ -1,0 +1,20 @@
+{
+  "name": "juice",
+  "version": "1.0.0",
+  "description": "Recover cited evidence from your local Claude Code and Codex history before an agent guesses or repeats work.",
+  "author": {
+    "name": "Tripp Cashel",
+    "url": "https://github.com/tcashel"
+  },
+  "homepage": "https://github.com/tcashel/homebrew-juice",
+  "repository": "https://github.com/tcashel/homebrew-juice",
+  "license": "MIT",
+  "keywords": [
+    "coding-history",
+    "provenance",
+    "context",
+    "claude-code",
+    "codex"
+  ],
+  "skills": "./skills/"
+}

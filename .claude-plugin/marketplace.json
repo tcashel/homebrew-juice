@@ -1,0 +1,27 @@
+{
+  "name": "juice",
+  "description": "Cited local coding-history workflows for Claude Code and Codex.",
+  "owner": {
+    "name": "Tripp Cashel"
+  },
+  "plugins": [
+    {
+      "name": "juice",
+      "source": "./plugins/juice",
+      "description": "Recover cited evidence from local Claude Code and Codex history before an agent guesses or repeats work.",
+      "version": "1.0.0",
+      "author": {
+        "name": "Tripp Cashel"
+      },
+      "homepage": "https://github.com/tcashel/homebrew-juice",
+      "repository": "https://github.com/tcashel/homebrew-juice",
+      "license": "MIT",
+      "category": "Developer Tools",
+      "tags": [
+        "coding-history",
+        "provenance",
+        "context"
+      ]
+    }
+  ]
+}

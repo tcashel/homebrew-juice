@@ -1,0 +1,4 @@
+interface:
+  display_name: "Use Juice history"
+  short_description: "Recover cited context from local coding history"
+  default_prompt: "Use $use-juice-history to explain why this unfamiliar code exists from my local agent history."

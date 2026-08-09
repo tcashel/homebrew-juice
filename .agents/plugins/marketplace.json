@@ -1,0 +1,20 @@
+{
+  "name": "juice",
+  "interface": {
+    "displayName": "Juice"
+  },
+  "plugins": [
+    {
+      "name": "juice",
+      "source": {
+        "source": "local",
+        "path": "./plugins/juice"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    }
+  ]
+}

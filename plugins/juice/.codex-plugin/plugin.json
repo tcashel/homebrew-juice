@@ -1,0 +1,36 @@
+{
+  "name": "juice",
+  "version": "1.0.0",
+  "description": "Recover cited evidence from your local Claude Code and Codex history before an agent guesses or repeats work.",
+  "author": {
+    "name": "Tripp Cashel",
+    "url": "https://github.com/tcashel"
+  },
+  "homepage": "https://github.com/tcashel/homebrew-juice",
+  "repository": "https://github.com/tcashel/homebrew-juice",
+  "license": "MIT",
+  "keywords": [
+    "coding-history",
+    "provenance",
+    "context",
+    "claude-code",
+    "codex"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Juice",
+    "shortDescription": "Cited context from history",
+    "longDescription": "Teach ChatGPT and Codex to retrieve bounded, cited evidence from the local Juice app when code is unfamiliar, an error repeats, or prior work matters. Requires Juice on Apple Silicon macOS 26.3 or newer.",
+    "developerName": "Tripp Cashel",
+    "category": "Productivity",
+    "capabilities": [
+      "Read"
+    ],
+    "defaultPrompt": [
+      "Explain why this unfamiliar code exists using Juice.",
+      "Find what happened the last time this error appeared.",
+      "Recover the relevant history before changing this repository."
+    ],
+    "brandColor": "#B86E00"
+  }
+}

@@ -4,7 +4,7 @@
 # Canonical Homebrew cask template for Juice (ADR 0015).
 #
 # This file is the source of truth. On each tagged release, CI renders it
-# (substituting 0.4.0 and f637a869de2379b734cab2f7821c26d8557feb8e1d500b8f375b044f7d78b97e from the built, notarized artifact)
+# (substituting 1.0.0 and d1ac96e848543a6a18428644e44d3312a529e4b60caf61096aef301ee588ac10 from the built, notarized artifact)
 # and commits the result to the PUBLIC tap repo `tcashel/homebrew-juice` as
 # `Casks/juice-app.rb`. The binary itself is hosted on that public repo's
 # GitHub Releases, so anonymous users can `brew install --cask juice-app` even
@@ -16,16 +16,16 @@
 #
 # Local render + validate:
 #   V=1.0.0 S=$(shasum -a 256 dist/Juice.zip | awk '{print $1}')
-#   sed "s|0.4.0|$V|g; s|f637a869de2379b734cab2f7821c26d8557feb8e1d500b8f375b044f7d78b97e|$S|g" packaging/homebrew/juice.rb > /tmp/juice-app.rb
+#   sed "s|1.0.0|$V|g; s|d1ac96e848543a6a18428644e44d3312a529e4b60caf61096aef301ee588ac10|$S|g" packaging/homebrew/juice.rb > /tmp/juice-app.rb
 #   brew style /tmp/juice-app.rb && brew audit --cask /tmp/juice-app.rb
 cask "juice-app" do
-  version "0.4.0"
-  sha256 "f637a869de2379b734cab2f7821c26d8557feb8e1d500b8f375b044f7d78b97e"
+  version "1.0.0"
+  sha256 "d1ac96e848543a6a18428644e44d3312a529e4b60caf61096aef301ee588ac10"
 
   url "https://github.com/tcashel/homebrew-juice/releases/download/v#{version}/Juice.zip"
   name "Juice"
-  desc "Mines AI coding-agent session histories into per-repo optimizations"
-  homepage "https://github.com/tcashel/juice"
+  desc "Turns coding-agent history into cited context and provenance"
+  homepage "https://github.com/tcashel/homebrew-juice"
 
   # arm64-only build; the deployment target is 26.3 — :tahoe gates at the
   # macOS 26 major version (Homebrew can't express a minor-version floor).
@@ -54,10 +54,9 @@ cask "juice-app" do
   ]
 
   caveats <<~EOS
+    Open Juice, then use Settings → Connections to connect detected agents.
+
     Enable CLI access in Juice → Settings → Advanced → Agent API, then run:
       juice status
-
-    Register the bundled MCP bridge so clients like Claude Code can reach Juice:
-      claude mcp add juice -- juice-mcpbridge
   EOS
 end
