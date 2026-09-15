@@ -1,6 +1,6 @@
 {
   "name": "juice",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Recover cited evidence from your local Claude Code and Codex history before an agent guesses or repeats work.",
   "author": {
     "name": "Tripp Cashel",
