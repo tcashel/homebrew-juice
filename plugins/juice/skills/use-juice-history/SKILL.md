@@ -19,7 +19,7 @@ Use the connected Juice MCP tools when present. Otherwise run `juice status`.
 
 ## Route the question
 
-1. For orientation in an unfamiliar repository, call `juice_recall` with the repository path. Expand only a fresh returned topic reference that matches the task.
+1. For orientation in an unfamiliar repository, call `juice_list_sessions` with the repository filter, or search for the specific uncertainty with `juice_search`. Inspect the matching session before drawing conclusions.
 2. For an unfamiliar file or line range, call `juice_why` when available. If an older Juice version does not expose it, call `juice_blame`, then expand only the returned session or commit with `juice_session_explain` or `juice_commit_explain`.
 3. For a repeated error, abandoned approach, or “last time” question, call `juice_search` with a narrow repository filter. Expand the strongest result with `juice_get_session`; use `juice_session_explain` when the question is about changes, commits, integration, or the captured human request.
 4. For one commit, call `juice_commit_explain`. For the most recent work, call `juice_session_explain` with `selector: "last"` and a repository path.
@@ -53,3 +53,8 @@ UTF-8 bounds, omission accounting, and an exact preview before copy.
   authorization.
 
 If the user did not ask to share, keep the result inside the current task and use it only to answer or guide the work.
+
+For saved transcript references, retain the source, leaf session ID, message index,
+and generation ID. Pass the returned `generationID` to later session reads and
+continuations (`hit.archiveGenerationID` on MCP search results). Treat
+`legacyPartial` coverage as surviving evidence, not a complete original log.
