@@ -9,7 +9,11 @@ Treat Juice as an evidence source, not an oracle. Retrieve the smallest reposito
 
 ## Check availability
 
-Use the connected Juice MCP tools when present. Otherwise run `juice status`.
+Use the connected Juice MCP tools when present; `juice_status` reports access
+and index freshness. Otherwise run `juice status`. This skill uses the
+eight-operation agent surface from ADR 0053. If the installation exposes older
+names, upgrade Juice and reload the client's tools before using this workflow;
+removed names are not fallback aliases in the new surface.
 
 - If a connected MCP tool or its grant is unavailable, ask the user to open Juice and repair **Settings → Connections**. Retry only after the state changes.
 - If the `juice` command exists but CLI access is unavailable, ask the user to open Juice and enable **Settings → Advanced → Agent API → Juice CLI access**.
@@ -19,18 +23,27 @@ Use the connected Juice MCP tools when present. Otherwise run `juice status`.
 
 ## Route the question
 
-1. For orientation in an unfamiliar repository, call `juice_list_sessions` with the repository filter, or search for the specific uncertainty with `juice_search`. Inspect the matching session before drawing conclusions.
-2. For an unfamiliar file or line range, call `juice_why` when available. If an older Juice version does not expose it, call `juice_blame`, then expand only the returned session or commit with `juice_session_explain` or `juice_commit_explain`.
-3. For a repeated error, abandoned approach, or “last time” question, call `juice_search` with a narrow repository filter. Expand the strongest result with `juice_get_session`; use `juice_session_explain` when the question is about changes, commits, integration, or the captured human request.
-4. For one commit, call `juice_commit_explain`. For the most recent work, call `juice_session_explain` with `selector: "last"` and a repository path.
-5. Stop when the evidence answers the question or Juice reports missing or ambiguous coverage. Do not broaden to other repositories without the user's explicit scope.
+1. For orientation in an unfamiliar repository, call `juice_session_list` with `repo`, or search for the specific uncertainty with `juice_search`. Inspect the matching session before drawing conclusions.
+2. For an unfamiliar file or line range, call `juice_why` with a `target` such as `Sources/App.swift:42-60` and `repo`. Use `juice_blame` when the question is line attribution, then expand only the returned session or commit.
+3. For a repeated error, abandoned approach, or “last time” question, call `juice_search` with a narrow `repo`. Expand the strongest result with `juice_session_transcript`, passing the hit's `leafSourceID` as `session`, its `generation`, and a bounded range or `around` message index. A short search page carries per-term counts and suggestions; widening or changing match mode is an explicit choice.
+4. For what a session changed or committed, call `juice_session_explain` with `session`. Use `session: "last"` with `repo` for the most recent work. Follow its counts with `juice_session_facts` and one `kind`: `files`, `commits`, `subagents`, `commands`, `images`, or `artifacts`. Recorded command exit status is evidence about that command, not proof of current runtime health.
+5. For why a commit or session exists, call `juice_why` with `kind: "commit"`, `commit`, and `repo`, or `kind: "session"`, `session`, and `repo`. The commit form includes changed files and integration evidence.
+6. Stop when the evidence answers the question or Juice reports missing or ambiguous coverage. Do not broaden to other repositories without the user's explicit scope.
 
 Use equivalent `juice` CLI commands with `--json` when MCP is unavailable but the local CLI is connected.
+
+Both transports return the same `juice/v1` envelope. Read `data` together with
+`applied`, `freshness`, `page`, `next`, and `warnings`; use `page.nextCursor`
+to continue. Shared inputs are flat (`repo`, `session`, `generation`, `from`,
+`to`), not nested `filters`. `last` requires a repository scope on MCP unless
+the user authorized `all: true`; the CLI can use its current checkout. Use
+`fields` (CLI `--fields`) to select small sections of `data` when appropriate.
 
 ## Preserve the evidence boundary
 
 - Distinguish an explicit captured human request from correlated errors, commands, edits, tests, and commits.
 - Preserve confidence, provenance tier, warnings, omissions, ambiguity, and `not captured` exactly.
+- Separate captured history from `live` Git/filesystem/index observations and Juice's `derived` links. Check freshness before treating a recently recorded fact as relevant; Juice cannot observe running processes, environment variables, or servers.
 - Never turn temporal proximity, attribution, or a search match into causal intent.
 - Cite the returned session, message, commit, file, and line locators that support the answer.
 - Prefer pointers and bounded excerpts over full transcripts. Do not include evidence unrelated to the current repository and question.
@@ -55,6 +68,8 @@ UTF-8 bounds, omission accounting, and an exact preview before copy.
 If the user did not ask to share, keep the result inside the current task and use it only to answer or guide the work.
 
 For saved transcript references, retain the source, leaf session ID, message index,
-and generation ID. Pass the returned `generationID` to later session reads and
-continuations (`hit.archiveGenerationID` on MCP search results). Treat
-`legacyPartial` coverage as surviving evidence, not a complete original log.
+and generation ID. Pass the returned search hit's `generation` to the first
+`juice_session_transcript` read; its `page.nextCursor` keeps later pages on
+that generation. Treat `legacy_partial` storage as surviving evidence, not a
+complete original log. Never silently substitute the latest generation for a
+saved reference that is unavailable.
