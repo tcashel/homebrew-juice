@@ -4,7 +4,7 @@
 # Canonical Homebrew cask template for Juice (ADR 0015).
 #
 # This file is the source of truth. On each tagged release, CI renders it
-# (substituting 2.7.0 and 2e45543c96d0e791b14e2e77a9b9f70588d225cbc4d809978772074e15ef7f8a from the built, notarized artifact)
+# (substituting 2.8.0 and 14740e83f39fc2ed62dccc24b150bbdce9f33e0dba2c4314c4add52449f94060 from the built, notarized artifact)
 # and commits the result to the PUBLIC tap repo `tcashel/homebrew-juice` as
 # `Casks/juice-app.rb`. The binary itself is hosted on that public repo's
 # GitHub Releases, so anonymous users can `brew install --cask juice-app` even
@@ -16,11 +16,11 @@
 #
 # Local render + validate:
 #   V=1.0.0 S=$(shasum -a 256 dist/Juice.zip | awk '{print $1}')
-#   sed "s|2.7.0|$V|g; s|2e45543c96d0e791b14e2e77a9b9f70588d225cbc4d809978772074e15ef7f8a|$S|g" packaging/homebrew/juice.rb > /tmp/juice-app.rb
+#   sed "s|2.8.0|$V|g; s|14740e83f39fc2ed62dccc24b150bbdce9f33e0dba2c4314c4add52449f94060|$S|g" packaging/homebrew/juice.rb > /tmp/juice-app.rb
 #   brew style /tmp/juice-app.rb && brew audit --cask /tmp/juice-app.rb
 cask "juice-app" do
-  version "2.7.0"
-  sha256 "2e45543c96d0e791b14e2e77a9b9f70588d225cbc4d809978772074e15ef7f8a"
+  version "2.8.0"
+  sha256 "14740e83f39fc2ed62dccc24b150bbdce9f33e0dba2c4314c4add52449f94060"
 
   url "https://github.com/tcashel/homebrew-juice/releases/download/v#{version}/Juice.zip"
   name "Juice"
