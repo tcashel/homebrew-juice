@@ -12,13 +12,13 @@ brew trust --cask tcashel/juice/juice-app
 brew install --cask juice-app
 ```
 
-The app is Developer ID signed, notarized, and stapled. Open Juice after installation and use **Settings → Connections** to connect detected Claude Code and Codex clients. To use the `juice` command directly, enable **Settings → Advanced → Agent API → Juice CLI access**.
+The app is Developer ID signed, notarized, and stapled. Open Juice after installation and use **Settings → Connections** to turn on Agent tools (MCP) and add Juice to Claude Code or Codex. To use the `juice` command directly, turn on **The `juice` command** on the same page.
 
 The cask token is `juice-app`. The bare `juice` token belongs to a different app in Homebrew's official cask repository.
 
 ## Agent workflow plugin
 
-The optional skills-only plugin teaches an agent when to query Juice. It does not bundle another MCP server or credential; Juice's in-app Connect flow remains the revocable local data boundary.
+The optional skills-only plugin teaches an agent when to query Juice. It does not bundle another MCP server or credential; the Agent tools (MCP) and `juice` command switches in Juice → Settings → Connections remain the local data boundary.
 
 Claude Code:
 

@@ -16,7 +16,7 @@ names, upgrade Juice and reload the client's tools before using this workflow;
 removed names are not fallback aliases in the new surface.
 
 - If a connected MCP tool or its grant is unavailable, ask the user to open Juice and repair **Settings → Connections**. Retry only after the state changes.
-- If the `juice` command exists but CLI access is unavailable, ask the user to open Juice and enable **Settings → Advanced → Agent API → Juice CLI access**.
+- If the `juice` command exists but CLI access is unavailable, ask the user to open Juice and turn on **Settings → Connections → The `juice` command**.
 - If `juice` is absent on Apple Silicon macOS 26.3 or newer, give the exact install commands: `brew tap tcashel/juice`, `brew trust --cask tcashel/juice/juice-app`, then `brew install --cask juice-app`.
 - On Linux, Windows, Intel Macs, or older macOS, say that the Juice app is not supported on this host and continue without historical claims. Do not recommend an impossible install.
 - Never bypass a missing, revoked, or expired grant.
