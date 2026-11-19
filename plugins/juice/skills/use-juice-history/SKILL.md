@@ -23,12 +23,13 @@ removed names are not fallback aliases in the new surface.
 
 ## Route the question
 
-1. For orientation in an unfamiliar repository, call `juice_session_list` with `repo`, or search for the specific uncertainty with `juice_search`. Inspect the matching session before drawing conclusions.
+1. For orientation in an unfamiliar repository, call `juice_session_list` with `repo`, or search for the specific uncertainty with `juice_search`. Inspect the matching session before drawing conclusions. A repository scope includes clones of the same Git remote, marked `checkout: "clone"` with where they ran; pass `clones: "exclude"` to keep only the repository's own checkouts. `coverage: ["clone_remote_unknown"]` means a clone in a deleted folder may be missing.
 2. For an unfamiliar file or line range, call `juice_why` with a `target` such as `Sources/App.swift:42-60` and `repo`. Use `juice_blame` when the question is line attribution, then expand only the returned session or commit.
-3. For a repeated error, abandoned approach, or “last time” question, call `juice_search` with a narrow `repo`. Expand the strongest result with `juice_session_transcript`, passing the hit's `leafSourceID` as `session`, its `generation`, and a bounded range or `around` message index. A short search page carries per-term counts and suggestions; widening or changing match mode is an explicit choice. Each hit's `origin` says who wrote the matched text: prefer a `typed` hit, or the message a hit `restates`, over relayed copies, summaries, and memory or Juice echoes, and pass `origin: ["typed"]` to search only what the person typed. Search leaves out your own session unless you pass `includeSelf: true`.
+3. For a repeated error, abandoned approach, or “last time” question, call `juice_search` with a narrow `repo`. Expand the strongest result with `juice_session_transcript`, passing the hit's `leafSourceID` as `session`, its `generation`, and a bounded range or `around` message index. A short search page carries per-term counts and suggestions; widening or changing match mode is an explicit choice. Plain questions, short SHAs, `#265`, and hyphenated names work as typed. A hit with `anyTerm: true` matched only some terms because no session held them all: treat it as weak evidence. `totalSessions` counts matching sessions; `totalCapped: true` means at least that many. Each hit's `origin` says who wrote the matched text: prefer a `typed` hit, or the message a hit `restates`, over relayed copies, summaries, and memory or Juice echoes, and pass `origin: ["typed"]` to search only what the person typed. Search leaves out your own session unless you pass `includeSelf: true`. Each hit's `requestBefore` is the typed request before it; pass `context: 4` to inline four neighbouring user and assistant messages and often skip the transcript read. When you do read it, pass `roles: ["user", "assistant"]` and `maxMessageChars` to keep the page small.
 4. For what a session changed or committed, call `juice_session_explain` with `session`. Use `session: "last"` with `repo` for the most recent work. Follow its counts with `juice_session_facts` and one `kind`: `files`, `commits`, `subagents`, `commands`, `images`, or `artifacts`. Recorded command exit status is evidence about that command, not proof of current runtime health.
 5. For why a commit or session exists, call `juice_why` with `kind: "commit"`, `commit`, and `repo`, or `kind: "session"`, `session`, and `repo`. The commit form includes changed files and integration evidence.
 6. Stop when the evidence answers the question or Juice reports missing or ambiguous coverage. Do not broaden to other repositories without the user's explicit scope.
+7. Budget three Juice calls for one question: one search, one read of the best hit (its `next` step names the call), and at most one reformulation. If those miss, say the history does not show it rather than searching again with the same terms. When a call fails, follow the error's "Next:" line once; do not retry it unchanged.
 
 Use equivalent `juice` CLI commands with `--json` when MCP is unavailable but the local CLI is connected.
 
@@ -37,7 +38,8 @@ Both transports return the same `juice/v1` envelope. Read `data` together with
 to continue. Shared inputs are flat (`repo`, `session`, `generation`, `from`,
 `to`), not nested `filters`. `last` requires a repository scope on MCP unless
 the user authorized `all: true`; the CLI can use its current checkout. Use
-`fields` (CLI `--fields`) to select small sections of `data` when appropriate.
+`fields` (CLI `--fields`) to select small sections of `data` when appropriate;
+`[]` goes into an array, as in `hits[].snippet`.
 
 ## Preserve the evidence boundary
 
